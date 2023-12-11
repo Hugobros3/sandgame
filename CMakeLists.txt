@@ -11,3 +11,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_executable(sandgame main.c sandgame.c sandgame_host.c)
 target_link_libraries(sandgame PRIVATE graphics)
+
+find_package(OpenMP)
+if(OpenMP_C_FOUND)
+    target_link_libraries(sandgame PUBLIC OpenMP::OpenMP_C)
+endif()
+
+set_property(TARGET sandgame PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)

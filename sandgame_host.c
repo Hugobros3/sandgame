@@ -28,7 +28,9 @@ void add_sand(World* world) {
 void tick_world(const World* src, World* dst) {
     assert(src->width == dst->width);
     assert(src->height == dst->height);
+#pragma omp parallel for num_threads(8) schedule(static)
     for (int x = 0; x < src->width; x++) {
+#pragma omp simd simdlen(4)
         for (int y = 0; y < src->height; y++) {
             if (*access_world(src, x, y) == AIR) {
                 if (in_bounds(src, x, y + 1) && *access_world(src, x, y + 1) == SAND) {
@@ -42,7 +44,7 @@ void tick_world(const World* src, World* dst) {
                     *access_world(dst, x, y) = AIR;
                 } else
                     *access_world(dst, x, y) = SAND;
-            }
+            } else __builtin_unreachable();
         }
     }
 }

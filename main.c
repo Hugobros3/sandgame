@@ -129,12 +129,14 @@ int main() {
     while (!glfwWindowShouldClose(gfx_get_glfw_handle(window))) {
         double then = glfwGetTime();
 
-        add_sand(world);
-        tick_world(world, world2);
-        World* tmp = world2;
-        world2 = world;
-        world = tmp;
-        render();
+        for (size_t i = 0; i < 16; i++) {
+            add_sand(world);
+            tick_world(world, world2);
+            World* tmp = world2;
+            world2 = world;
+            world = tmp;
+            render();
+        }
 
         glfwSwapBuffers(gfx_get_glfw_handle(window));
         if (config.finish)
